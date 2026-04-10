@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
@@ -61,6 +62,17 @@ const CATEGORIES = [
 ];
 
 export default function HomePage() {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    // In production, POST to /api/newsletter
+    setNewsletterSubmitted(true);
+    setNewsletterEmail('');
+  }
+
   return (
     <div className={styles.page}>
       {/* Hero Section */}
@@ -214,14 +226,24 @@ export default function HomePage() {
             <p className={styles.newsletterText}>
               Be the first to discover new arrivals, exclusive offers, and stories from our artisan partners.
             </p>
-            <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className={styles.newsletterInput}
-              />
-              <Button type="submit">Subscribe</Button>
-            </form>
+            {newsletterSubmitted ? (
+              <p className={styles.newsletterSuccess} role="status">
+                Thank you for subscribing!
+              </p>
+            ) : (
+              <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className={styles.newsletterInput}
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  required
+                  aria-label="Email address"
+                />
+                <Button type="submit">Subscribe</Button>
+              </form>
+            )}
           </div>
         </div>
       </section>

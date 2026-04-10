@@ -1,96 +1,114 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Card, CardImage, CardContent, CardTitle, CardPrice } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import type { ProductListItem, SortOption } from '@/types';
 import styles from './page.module.css';
 
-const PRODUCTS = [
-  {
-    id: '1',
-    name: 'Minimal Desk Lamp',
-    slug: 'minimal-desk-lamp',
-    price: '$289',
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&q=80',
-    badge: 'New',
-    category: 'Lighting',
-  },
-  {
-    id: '2',
-    name: 'Ceramic Pour-Over Set',
-    slug: 'ceramic-pour-over-set',
-    price: '$156',
-    comparePrice: '$195',
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',
-    badge: '20% Off',
-    category: 'Tableware',
-  },
-  {
-    id: '3',
-    name: 'Leather Notebook',
-    slug: 'leather-notebook',
-    price: '$89',
-    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&q=80',
-    category: 'Stationery',
-  },
-  {
-    id: '4',
-    name: 'Artisan Candle',
-    slug: 'artisan-candle',
-    price: '$68',
-    image: 'https://images.unsplash.com/photo-1602607714066-4908c9a0a2b5?w=600&q=80',
-    badge: 'Bestseller',
-    category: 'Home',
-  },
-  {
-    id: '5',
-    name: 'Copper Tumbler Set',
-    slug: 'copper-tumbler-set',
-    price: '$124',
-    image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80',
-    category: 'Tableware',
-  },
-  {
-    id: '6',
-    name: 'Brass Table Clock',
-    slug: 'brass-table-clock',
-    price: '$345',
-    image: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=600&q=80',
-    badge: 'New',
-    category: 'Lighting',
-  },
-  {
-    id: '7',
-    name: 'Linen Throw Blanket',
-    slug: 'linen-throw-blanket',
-    price: '$198',
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',
-    category: 'Home',
-  },
-  {
-    id: '8',
-    name: 'Walnut Phone Stand',
-    slug: 'walnut-phone-stand',
-    price: '$78',
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80',
-    category: 'Stationery',
-  },
-];
-
-const CATEGORIES = ['All', 'Lighting', 'Tableware', 'Stationery', 'Home'];
-const SORT_OPTIONS = [
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'newest', label: 'Newest' },
   { value: 'price-asc', label: 'Price: Low to High' },
   { value: 'price-desc', label: 'Price: High to Low' },
+  { value: 'rating', label: 'Top Rated' },
+  { value: 'popular', label: 'Most Popular' },
 ];
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<ProductListItem[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedSort, setSelectedSort] = useState<SortOption>('newest');
+  const [minPrice, setMinPrice] = useState<string>('');
+  const [maxPrice, setMaxPrice] = useState<string>('');
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      if (data.success) {
+        setCategories([{ id: 'all', name: 'All', slug: '' }, ...data.data.map((c: { id: string; name: string; slug: string }) => c)]);
+      }
+    } catch {
+      // fallback to default categories
+      setCategories([
+        { id: 'all', name: 'All', slug: '' },
+        { id: '1', name: 'Lighting', slug: 'lighting' },
+        { id: '2', name: 'Tableware', slug: 'tableware' },
+        { id: '3', name: 'Stationery', slug: 'stationery' },
+        { id: '4', name: 'Home', slug: 'home' },
+      ]);
+    }
+  }, []);
+
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const params = new URLSearchParams({
+        page: String(page),
+        sort: selectedSort,
+      });
+      if (selectedCategory && selectedCategory !== 'All') {
+        params.set('category', selectedCategory.toLowerCase());
+      }
+      if (minPrice) params.set('minPrice', String(parseInt(minPrice, 10) * 100));
+      if (maxPrice) params.set('maxPrice', String(parseInt(maxPrice, 10) * 100));
+      if (inStockOnly) params.set('inStock', 'true');
+
+      const res = await fetch(`/api/products?${params}`);
+      const data = await res.json();
+
+      if (data.success) {
+        setProducts(data.data.products);
+        setTotal(data.data.total);
+        setTotalPages(data.data.totalPages);
+      } else {
+        setError(data.error || 'Failed to load products');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, [page, selectedSort, selectedCategory, minPrice, maxPrice, inStockOnly]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  function clearFilters() {
+    setSelectedCategory('All');
+    setMinPrice('');
+    setMaxPrice('');
+    setInStockOnly(false);
+    setSelectedSort('newest');
+    setPage(1);
+  }
+
+  const hasActiveFilters = selectedCategory !== 'All' || minPrice || maxPrice || inStockOnly;
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>All Products</h1>
-          <p className={styles.subtitle}>Discover our curated collection of exceptional pieces</p>
+          <p className={styles.subtitle}>
+            {loading ? 'Loading...' : `${total} products`}
+          </p>
         </div>
 
         <div className={styles.layout}>
@@ -99,10 +117,19 @@ export default function ProductsPage() {
             <div className={styles.filterGroup}>
               <h3 className={styles.filterTitle}>Categories</h3>
               <div className={styles.filterOptions}>
-                {CATEGORIES.map((category) => (
-                  <label key={category} className={styles.filterOption}>
-                    <input type="radio" name="category" value={category} defaultChecked={category === 'All'} />
-                    <span>{category}</span>
+                {categories.map((cat) => (
+                  <label key={cat.id} className={styles.filterOption}>
+                    <input
+                      type="radio"
+                      name="category"
+                      value={cat.name}
+                      checked={selectedCategory === cat.name}
+                      onChange={() => {
+                        setSelectedCategory(cat.name);
+                        setPage(1);
+                      }}
+                    />
+                    <span>{cat.name}</span>
                   </label>
                 ))}
               </div>
@@ -111,9 +138,27 @@ export default function ProductsPage() {
             <div className={styles.filterGroup}>
               <h3 className={styles.filterTitle}>Price Range</h3>
               <div className={styles.priceInputs}>
-                <input type="number" placeholder="Min" className={styles.priceInput} />
+                <input
+                  type="number"
+                  placeholder="Min"
+                  className={styles.priceInput}
+                  value={minPrice}
+                  onChange={(e) => {
+                    setMinPrice(e.target.value);
+                    setPage(1);
+                  }}
+                />
                 <span className={styles.priceSeparator}>—</span>
-                <input type="number" placeholder="Max" className={styles.priceInput} />
+                <input
+                  type="number"
+                  placeholder="Max"
+                  className={styles.priceInput}
+                  value={maxPrice}
+                  onChange={(e) => {
+                    setMaxPrice(e.target.value);
+                    setPage(1);
+                  }}
+                />
               </div>
             </div>
 
@@ -121,64 +166,109 @@ export default function ProductsPage() {
               <h3 className={styles.filterTitle}>Availability</h3>
               <div className={styles.filterOptions}>
                 <label className={styles.filterOption}>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={inStockOnly}
+                    onChange={(e) => {
+                      setInStockOnly(e.target.checked);
+                      setPage(1);
+                    }}
+                  />
                   <span>In Stock Only</span>
                 </label>
               </div>
             </div>
 
-            <Button variant="outline" className={styles.clearBtn}>Clear Filters</Button>
+            <Button
+              variant="outline"
+              className={styles.clearBtn}
+              onClick={clearFilters}
+              disabled={!hasActiveFilters}
+            >
+              Clear Filters
+            </Button>
           </aside>
 
           {/* Products Grid */}
           <div className={styles.main}>
-            {/* Toolbar */}
             <div className={styles.toolbar}>
-              <span className={styles.resultCount}>{PRODUCTS.length} Products</span>
+              <span className={styles.resultCount}>
+                {loading ? 'Loading...' : `${total} Products`}
+              </span>
               <div className={styles.sortWrapper}>
                 <label htmlFor="sort" className={styles.sortLabel}>Sort by:</label>
-                <select id="sort" className={styles.sortSelect}>
-                  {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
+                <select
+                  id="sort"
+                  className={styles.sortSelect}
+                  value={selectedSort}
+                  onChange={(e) => {
+                    setSelectedSort(e.target.value as SortOption);
+                    setPage(1);
+                  }}
+                >
+                  {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
             </div>
 
-            {/* Grid */}
-            <div className={styles.grid}>
-              {PRODUCTS.map((product) => (
-                <Link href={`/products/${product.slug}`} key={product.id}>
-                  <Card hover className={styles.productCard}>
-                    <CardImage src={product.image} alt={product.name} />
-                    <CardContent>
-                      {product.badge && (
-                        <Badge
-                          variant={product.badge === '20% Off' ? 'error' : 'accent'}
-                          className={styles.productBadge}
-                        >
-                          {product.badge}
-                        </Badge>
-                      )}
-                      <span className={styles.productCategory}>{product.category}</span>
-                      <CardTitle>{product.name}</CardTitle>
-                      <CardPrice amount={product.price} compareAmount={product.comparePrice} />
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className={styles.pagination}>
-              <Button variant="outline" disabled>Previous</Button>
-              <div className={styles.paginationPages}>
-                <span className={styles.paginationCurrent}>1</span>
-                <span className={styles.paginationSeparator}>/</span>
-                <span className={styles.paginationTotal}>3</span>
+            {error ? (
+              <div className={styles.errorState}>
+                <p>{error}</p>
+                <Button variant="outline" onClick={fetchProducts}>Retry</Button>
               </div>
-              <Button variant="outline">Next</Button>
-            </div>
+            ) : (
+              <>
+                <div className={styles.grid}>
+                  {products.map((product) => (
+                    <Link href={`/products/${product.slug}`} key={product.id}>
+                      <Card hover className={styles.productCard}>
+                        <CardImage src={product.images[0]?.url} alt={product.name} />
+                        <CardContent>
+                          {product.isFeatured && (
+                            <Badge variant="accent" className={styles.productBadge}>
+                              Featured
+                            </Badge>
+                          )}
+                          <span className={styles.productCategory}>{product.category.name}</span>
+                          <CardTitle>{product.name}</CardTitle>
+                          <CardPrice
+                            amount={`$${(product.price / 100).toFixed(2)}`}
+                            compareAmount={product.comparePrice ? `$${(product.comparePrice / 100).toFixed(2)}` : undefined}
+                          />
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className={styles.pagination}>
+                    <Button
+                      variant="outline"
+                      disabled={page <= 1}
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    >
+                      Previous
+                    </Button>
+                    <div className={styles.paginationPages}>
+                      <span className={styles.paginationCurrent}>{page}</span>
+                      <span className={styles.paginationSeparator}>/</span>
+                      <span className={styles.paginationTotal}>{totalPages}</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      disabled={page >= totalPages}
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

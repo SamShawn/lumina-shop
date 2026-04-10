@@ -241,6 +241,12 @@
   font-size: var(--text-lg);
 }
 
+.lowStock {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-warning);
+}
+
 /* Actions */
 .actions {
   display: flex;

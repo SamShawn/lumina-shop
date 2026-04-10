@@ -368,3 +368,10 @@
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.15);
 }
+
+.newsletterSuccess {
+  font-size: var(--text-sm);
+  color: var(--color-success);
+  text-align: center;
+  padding: var(--space-4) 0;
+}
