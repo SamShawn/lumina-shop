@@ -1,0 +1,243 @@
+.page {
+  min-height: 100vh;
+  padding: var(--space-12) 0;
+}
+
+.container {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-8);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-12);
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+  }
+}
+
+.filterGroup {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.filterTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.filterOption:hover {
+  color: var(--color-text);
+}
+
+.filterOption input {
+  accent-color: var(--color-accent);
+}
+
+.priceInputs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.priceInput {
+  width: 80px;
+  height: 36px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+}
+
+.priceInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.priceSeparator {
+  color: var(--color-text-muted);
+}
+
+.clearBtn {
+  width: 100%;
+}
+
+/* Main Content */
+.main {
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.resultCount {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sortLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.sortSelect {
+  height: 36px;
+  padding: 0 var(--space-8) 0 var(--space-3);
+  font-size: var(--text-sm);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.productCard {
+  position: relative;
+}
+
+.productBadge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 1;
+}
+
+.productCategory {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-2);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+}
+
+.paginationPages {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.paginationCurrent {
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+}
+
+.paginationSeparator {
+  color: var(--color-text-muted);
+}
+
+.paginationTotal {
+  color: var(--color-text-muted);
+}
