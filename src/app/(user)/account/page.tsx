@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import styles from './page.module.css';
 
@@ -87,7 +88,7 @@ export default function AccountPage() {
               </div>
               <div className={styles.wishlistGrid}>
                 <div className={styles.wishlistItem}>
-                  <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=200&q=80" alt="Product" />
+                  <Image src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=200&q=80" alt="Product" fill sizes="120px" style={{ objectFit: 'cover' }} />
                   <Button variant="ghost" size="sm" className={styles.wishlistRemove}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M18 6 6 18M6 6l12 12"/>
@@ -95,7 +96,7 @@ export default function AccountPage() {
                   </Button>
                 </div>
                 <div className={styles.wishlistItem}>
-                  <img src="https://images.unsplash.com/photo-1602607714066-4908c9a0a2b5?w=200&q=80" alt="Product" />
+                  <Image src="https://images.unsplash.com/photo-1602607714066-4908c9a0a2b5?w=200&q=80" alt="Product" fill sizes="120px" style={{ objectFit: 'cover' }} />
                   <Button variant="ghost" size="sm" className={styles.wishlistRemove}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M18 6 6 18M6 6l12 12"/>
@@ -103,7 +104,7 @@ export default function AccountPage() {
                   </Button>
                 </div>
                 <div className={styles.wishlistItem}>
-                  <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=200&q=80" alt="Product" />
+                  <Image src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=200&q=80" alt="Product" fill sizes="120px" style={{ objectFit: 'cover' }} />
                   <Button variant="ghost" size="sm" className={styles.wishlistRemove}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M18 6 6 18M6 6l12 12"/>

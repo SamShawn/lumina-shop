@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import styles from './page.module.css';
@@ -64,7 +65,7 @@ export default function CartPage() {
                   {CART_ITEMS.map((item) => (
                     <div key={item.id} className={styles.item}>
                       <div className={styles.itemProduct}>
-                        <img src={item.image} alt={item.name} className={styles.itemImage} />
+                        <Image src={item.image} alt={item.name} fill sizes="80px" style={{ objectFit: 'cover' }} className={styles.itemImage} />
                         <div className={styles.itemInfo}>
                           <Link href={`/products/${item.slug}`} className={styles.itemName}>
                             {item.name}

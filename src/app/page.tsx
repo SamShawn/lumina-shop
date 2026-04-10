@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card, CardImage, CardContent, CardTitle, CardDescription, CardPrice } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -84,10 +85,14 @@ export default function HomePage() {
         </div>
         <div className={styles.heroVisual}>
           <div className={styles.heroImageWrapper}>
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&q=80"
               alt="Luxury interior"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
               className={styles.heroImage}
+              style={{ objectFit: 'cover' }}
             />
           </div>
           <div className={styles.heroAccent}></div>
@@ -110,7 +115,14 @@ export default function HomePage() {
             {CATEGORIES.map((category) => (
               <Link href={`/collections/${category.name.toLowerCase()}`} key={category.name} className={styles.categoryCard}>
                 <div className={styles.categoryImageWrapper}>
-                  <img src={category.image} alt={category.name} className={styles.categoryImage} />
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className={styles.categoryImage}
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
                 <div className={styles.categoryContent}>
                   <h3 className={styles.categoryName}>{category.name}</h3>
@@ -181,10 +193,13 @@ export default function HomePage() {
               </Link>
             </div>
             <div className={styles.philosophyVisual}>
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80"
                 alt="Craftsmanship"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className={styles.philosophyImage}
+                style={{ objectFit: 'cover' }}
               />
             </div>
           </div>

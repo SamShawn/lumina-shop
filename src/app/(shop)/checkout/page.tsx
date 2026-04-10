@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import styles from './page.module.css';
@@ -144,7 +145,7 @@ export default function CheckoutPage() {
               {CART_ITEMS.map((item) => (
                 <div key={item.id} className={styles.summaryItem}>
                   <div className={styles.summaryItemImage}>
-                    <img src={item.image} alt={item.name} />
+                    <Image src={item.image} alt={item.name} fill sizes="56px" style={{ objectFit: 'cover' }} />
                     <span className={styles.summaryItemQty}>{item.quantity}</span>
                   </div>
                   <div className={styles.summaryItemInfo}>

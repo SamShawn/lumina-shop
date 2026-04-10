@@ -1,4 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react';
+import Image from 'next/image';
 import styles from './Card.module.css';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -25,7 +26,14 @@ Card.displayName = 'Card';
 export function CardImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
   return (
     <div className={styles.imageContainer}>
-      <img src={src} alt={alt} className={`${styles.image} ${className || ''}`} />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className={`${styles.image} ${className || ''}`}
+        style={{ objectFit: 'cover' }}
+      />
     </div>
   );
 }

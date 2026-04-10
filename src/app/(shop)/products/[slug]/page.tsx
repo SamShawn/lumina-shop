@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import Image from 'next/image';
 import styles from './page.module.css';
 
 const PRODUCT = {
@@ -49,12 +50,12 @@ export default function ProductDetailPage() {
           {/* Gallery */}
           <div className={styles.gallery}>
             <div className={styles.mainImage}>
-              <img src={PRODUCT.images[0]} alt={PRODUCT.name} />
+              <Image src={PRODUCT.images[0]} alt={PRODUCT.name} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} priority />
             </div>
             <div className={styles.thumbnails}>
               {PRODUCT.images.map((image, index) => (
                 <button key={index} className={`${styles.thumbnail} ${index === 0 ? styles.active : ''}`}>
-                  <img src={image} alt={`${PRODUCT.name} view ${index + 1}`} />
+                  <Image src={image} alt={`${PRODUCT.name} view ${index + 1}`} fill sizes="80px" style={{ objectFit: 'cover' }} />
                 </button>
               ))}
             </div>
