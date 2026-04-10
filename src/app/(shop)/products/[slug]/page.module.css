@@ -239,6 +239,20 @@
   text-align: center;
   font-family: var(--font-mono);
   font-size: var(--text-lg);
+  animation: quantityFlip 200ms ease-out;
+}
+
+@keyframes quantityFlip {
+  0% { transform: scaleY(1); opacity: 1; }
+  40% { transform: scaleY(0); opacity: 0; }
+  60% { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quantityValue {
+    animation: none;
+  }
 }
 
 .lowStock {

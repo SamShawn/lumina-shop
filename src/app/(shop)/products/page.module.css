@@ -94,6 +94,23 @@
   accent-color: var(--color-accent);
 }
 
+.filterOption input.bounce:checked {
+  animation: checkboxBounce 300ms ease-out;
+}
+
+@keyframes checkboxBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filterOption input.bounce:checked {
+    animation: none;
+  }
+}
+
 .priceInputs {
   display: flex;
   align-items: center;

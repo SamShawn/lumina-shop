@@ -2,12 +2,38 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Header } from "@/components/layouts/Header";
 import { Footer } from "@/components/layouts/Footer";
+import { CartDrawer } from "@/components/cart/CartDrawer";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Lumina - Curated Luxury for the Modern Connoisseur",
   description: "Discover exceptional pieces crafted with precision and purpose. Lumina offers a curated selection of luxury goods for the discerning individual.",
   keywords: ["luxury", "e-commerce", "premium", "design", "artisan"],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://lumina.shop'),
+  openGraph: {
+    type: "website",
+    siteName: "Lumina",
+    title: "Lumina - Curated Luxury for the Modern Connoisseur",
+    description: "Discover exceptional pieces crafted with precision and purpose. Lumina offers a curated selection of luxury goods for the discerning individual.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Lumina - Curated Luxury",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lumina - Curated Luxury for the Modern Connoisseur",
+    description: "Discover exceptional pieces crafted with precision and purpose.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -25,11 +51,14 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <Providers>
           <Header />
-          <main>{children}</main>
+          <main id="main-content" tabIndex={-1}>{children}</main>
           <Footer />
         </Providers>
+        <CartDrawer />
+        <Lightbox />
       </body>
     </html>
   );

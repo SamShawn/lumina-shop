@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card, CardImage, CardContent, CardTitle, CardDescription, CardPrice } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { Input } from '@/components/ui/Input';
+import { newsletterSchema } from '@/lib/validation';
 import styles from './page.module.css';
 
 const FEATURED_PRODUCTS = [
@@ -64,13 +66,29 @@ const CATEGORIES = [
 export default function HomePage() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [newsletterError, setNewsletterError] = useState('');
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
 
-  function handleNewsletterSubmit(e: React.FormEvent) {
+  async function handleNewsletterSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!newsletterEmail) return;
-    // In production, POST to /api/newsletter
-    setNewsletterSubmitted(true);
-    setNewsletterEmail('');
+    setNewsletterError('');
+
+    const result = newsletterSchema.safeParse({ email: newsletterEmail });
+    if (!result.success) {
+      setNewsletterError(result.error.issues[0].message);
+      return;
+    }
+
+    setNewsletterLoading(true);
+    try {
+      // In production, POST to /api/newsletter
+      setNewsletterSubmitted(true);
+      setNewsletterEmail('');
+    } catch {
+      setNewsletterError('Something went wrong. Please try again.');
+    } finally {
+      setNewsletterLoading(false);
+    }
   }
 
   return (
@@ -231,17 +249,21 @@ export default function HomePage() {
                 Thank you for subscribing!
               </p>
             ) : (
-              <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
-                <input
+              <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit} noValidate>
+                <Input
                   type="email"
                   placeholder="Enter your email"
-                  className={styles.newsletterInput}
                   value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  required
+                  onChange={(e) => {
+                    setNewsletterEmail(e.target.value);
+                    if (newsletterError) setNewsletterError('');
+                  }}
+                  error={newsletterError}
                   aria-label="Email address"
                 />
-                <Button type="submit">Subscribe</Button>
+                <Button type="submit" isLoading={newsletterLoading} disabled={newsletterLoading}>
+                  Subscribe
+                </Button>
               </form>
             )}
           </div>

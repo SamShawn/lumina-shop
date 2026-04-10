@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Card, CardImage, CardContent, CardTitle, CardPrice } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { BouncingCheckbox } from '@/components/ui/BouncingCheckbox';
 import type { ProductListItem, SortOption } from '@/types';
 import styles from './page.module.css';
 
@@ -115,7 +116,7 @@ export default function ProductsPage() {
           {/* Filters Sidebar */}
           <aside className={styles.sidebar}>
             <div className={styles.filterGroup}>
-              <h3 className={styles.filterTitle}>Categories</h3>
+              <h2 className={styles.filterTitle}>Categories</h2>
               <div className={styles.filterOptions}>
                 {categories.map((cat) => (
                   <label key={cat.id} className={styles.filterOption}>
@@ -136,7 +137,7 @@ export default function ProductsPage() {
             </div>
 
             <div className={styles.filterGroup}>
-              <h3 className={styles.filterTitle}>Price Range</h3>
+              <h2 className={styles.filterTitle}>Price Range</h2>
               <div className={styles.priceInputs}>
                 <input
                   type="number"
@@ -163,19 +164,16 @@ export default function ProductsPage() {
             </div>
 
             <div className={styles.filterGroup}>
-              <h3 className={styles.filterTitle}>Availability</h3>
+              <h2 className={styles.filterTitle}>Availability</h2>
               <div className={styles.filterOptions}>
-                <label className={styles.filterOption}>
-                  <input
-                    type="checkbox"
-                    checked={inStockOnly}
-                    onChange={(e) => {
-                      setInStockOnly(e.target.checked);
-                      setPage(1);
-                    }}
-                  />
-                  <span>In Stock Only</span>
-                </label>
+                <BouncingCheckbox
+                  label="In Stock Only"
+                  checked={inStockOnly}
+                  onChange={(e) => {
+                    setInStockOnly(e.target.checked);
+                    setPage(1);
+                  }}
+                />
               </div>
             </div>
 

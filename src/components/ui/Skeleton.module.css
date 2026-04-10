@@ -47,3 +47,10 @@
   height: 24px;
   width: 80%;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--color-secondary);
+  }
+}

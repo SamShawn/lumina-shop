@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { useCartStore } from '@/stores';
+import { useCartStore, useUIStore } from '@/stores';
 import styles from './page.module.css';
 
 // Mock product for demo — in production this would be fetched from /api/products/[slug]
@@ -49,6 +49,7 @@ const PRODUCT = {
 export default function ProductDetailPage() {
   const router = useRouter();
   const { addItem, openCart } = useCartStore();
+  const { openLightbox } = useUIStore();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -99,7 +100,12 @@ export default function ProductDetailPage() {
         <div className={styles.layout}>
           {/* Gallery */}
           <div className={styles.gallery}>
-            <div className={styles.mainImage}>
+            <button
+              className={styles.mainImage}
+              onClick={() => openLightbox(PRODUCT.images, selectedImage)}
+              aria-label="View full size image"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'zoom-in' }}
+            >
               <Image
                 src={PRODUCT.images[selectedImage].url}
                 alt={PRODUCT.name}
@@ -108,14 +114,17 @@ export default function ProductDetailPage() {
                 style={{ objectFit: 'cover' }}
                 priority
               />
-            </div>
+            </button>
             <div className={styles.thumbnails} role="list">
               {PRODUCT.images.map((img, index) => (
                 <button
                   key={index}
                   role="listitem"
                   className={`${styles.thumbnail} ${index === selectedImage ? styles.active : ''}`}
-                  onClick={() => setSelectedImage(index)}
+                  onClick={() => {
+                    setSelectedImage(index);
+                    openLightbox(PRODUCT.images, index);
+                  }}
                   aria-label={`View image ${index + 1}`}
                   aria-pressed={index === selectedImage}
                 >
@@ -158,7 +167,7 @@ export default function ProductDetailPage() {
 
             {/* Features */}
             <div className={styles.features}>
-              <h3 className={styles.sectionTitle}>Features</h3>
+              <h2 className={styles.sectionTitle}>Features</h2>
               <ul className={styles.featureList}>
                 {PRODUCT.features.map((feature, index) => (
                   <li key={index} className={styles.featureItem}>
@@ -185,7 +194,7 @@ export default function ProductDetailPage() {
                     <path d="M5 12h14"/>
                   </svg>
                 </button>
-                <span className={styles.quantityValue} aria-live="polite" aria-atomic="true">{quantity}</span>
+                <span className={styles.quantityValue} aria-live="polite" aria-atomic="true" key={quantity}>{quantity}</span>
                 <button
                   className={styles.quantityBtn}
                   onClick={increment}
@@ -210,7 +219,14 @@ export default function ProductDetailPage() {
                 onClick={handleAddToCart}
                 isLoading={false}
               >
-                {addedToCart ? 'Added to Cart!' : 'Add to Cart'}
+                {addedToCart ? (
+                  <>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Added to Cart!
+                  </>
+                ) : 'Add to Cart'}
               </Button>
               <Button variant="outline" size="lg" aria-label="Add to wishlist">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
@@ -221,7 +237,7 @@ export default function ProductDetailPage() {
 
             {/* Specifications */}
             <div className={styles.specifications}>
-              <h3 className={styles.sectionTitle}>Specifications</h3>
+              <h2 className={styles.sectionTitle}>Specifications</h2>
               <dl className={styles.specList}>
                 {Object.entries(PRODUCT.specifications ?? {}).map(([key, value]) => (
                   <div key={key} className={styles.specItem}>

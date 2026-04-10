@@ -12,6 +12,10 @@
   white-space: nowrap;
 }
 
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
