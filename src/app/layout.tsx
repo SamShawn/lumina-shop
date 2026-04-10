@@ -16,7 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=JSON.parse(localStorage.getItem('lumina-ui')||'{}');var theme=t.theme||'system';var isDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=theme==='dark'?'dark':theme==='light'?'light':isDark?'dark':'light';document.documentElement.setAttribute('data-theme',resolved);}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body>
         <Providers>
           <Header />

@@ -65,10 +65,15 @@ export const useUIStore = create<UIState>()(
           root.setAttribute('data-theme', 'light');
           set({ resolvedTheme: 'light' });
         } else {
-          // system
-          const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          root.setAttribute('data-theme', isDark ? 'dark' : 'light');
-          set({ resolvedTheme: isDark ? 'dark' : 'light' });
+          // system — listen for changes
+          const mq = window.matchMedia('(prefers-color-scheme: dark)');
+          const applySystem = () => {
+            const isDark = mq.matches;
+            root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            set({ resolvedTheme: isDark ? 'dark' : 'light' });
+          };
+          applySystem();
+          mq.addEventListener('change', applySystem);
         }
       },
 
