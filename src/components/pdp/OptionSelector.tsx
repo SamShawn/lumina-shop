@@ -6,11 +6,12 @@ interface OptionSelectorProps {
   options: string[];
   selected: string;
   onChange: (value: string) => void;
+  label?: string;
 }
 
-export function OptionSelector({ options, selected, onChange }: OptionSelectorProps) {
+export function OptionSelector({ options, selected, onChange, label }: OptionSelectorProps) {
   return (
-    <div className={styles.options} role="group" aria-label="Select option">
+    <div className={styles.options} role="group" aria-label={label || 'Select option'}>
       {options.map((option) => (
         <button
           key={option}

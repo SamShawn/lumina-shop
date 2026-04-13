@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Button, Badge } from '@/components/design-system';
+import { Button } from '@/components/design-system';
 import { OptionSelector } from './OptionSelector';
 import { ProductTabs } from './ProductTabs';
 import { AddToCartButton } from './AddToCartButton';
@@ -96,6 +96,7 @@ export function ProductInfo({ product, onAddToCart }: ProductInfoProps) {
             <div key={opt.name} className={styles.optionGroup}>
               <span className={styles.optionLabel}>{opt.name}</span>
               <OptionSelector
+                label={opt.name}
                 options={opt.values}
                 selected={selectedOptions[opt.name]}
                 onChange={(value) => setSelectedOptions(prev => ({ ...prev, [opt.name]: value }))}
