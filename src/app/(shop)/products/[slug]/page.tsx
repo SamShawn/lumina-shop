@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ProductGallery } from '@/components/pdp/ProductGallery';
@@ -17,7 +16,7 @@ const PRODUCT = {
   description:
     'Wheel-thrown from local stoneware clay. Each piece develops its own character through the wood-firing process — no two are identical.',
   stock: 12,
-  category: { name: 'Ceramics' },
+  category: { id: 'cat-1', name: 'Ceramics', slug: 'ceramics' },
   images: [
     { url: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80', alt: 'Ceremonial bowl front view' },
     { url: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80', alt: 'Ceremonial bowl detail' },
@@ -31,7 +30,6 @@ const PRODUCT = {
 
 export default function ProductDetailPage() {
   const { addItem, openCart } = useCartStore();
-  const [addedToCart, setAddedToCart] = useState(false);
 
   function handleAddToCart() {
     addItem({
@@ -44,9 +42,7 @@ export default function ProductDetailPage() {
       isFeatured: true,
       stock: PRODUCT.stock,
     });
-    setAddedToCart(true);
     openCart();
-    setTimeout(() => setAddedToCart(false), 2000);
   }
 
   return (
