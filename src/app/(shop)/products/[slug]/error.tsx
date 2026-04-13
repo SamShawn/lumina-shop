@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
-import styles from '../error.module.css';
+import styles from '../../error.module.css';
 
 export default function ProductDetailError({
   error,
