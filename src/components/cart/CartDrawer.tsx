@@ -3,12 +3,14 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/stores';
 import { Button } from '@/components/design-system';
 import styles from './CartDrawer.module.css';
 
 export function CartDrawer() {
+  const router = useRouter();
   const { items, isOpen, closeCart, updateQuantity, removeItem } = useCartStore();
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -78,7 +80,7 @@ export function CartDrawer() {
                   <AnimatePresence initial={false}>
                     {items.map((item) => (
                       <motion.div
-                        key={item.id}
+                        key={item.product.id}
                         className={styles.item}
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -113,7 +115,8 @@ export function CartDrawer() {
                             ${(item.product.price / 100).toFixed(2)}
                           </span>
                           <div className={styles.itemActions}>
-                            <div className={styles.qtyControl} role="group" aria-label="Quantity">
+                            <fieldset className={styles.qtyControl} style={{ border: 'none', padding: 0, margin: 0 }}>
+                              <legend className={styles.srOnly}>Quantity for {item.product.name}</legend>
                               <button
                                 className={styles.qtyBtn}
                                 onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
@@ -131,7 +134,7 @@ export function CartDrawer() {
                               >
                                 +
                               </button>
-                            </div>
+                            </fieldset>
                             <button
                               className={styles.removeBtn}
                               onClick={() => removeItem(item.product.id)}
@@ -177,13 +180,17 @@ export function CartDrawer() {
               <Button
                 size="lg"
                 className={styles.checkoutBtn}
-                onClick={() => { closeCart(); window.location.href = '/checkout'; }}
+                onClick={() => { closeCart(); router.push('/checkout'); }}
               >
                 Proceed to Checkout
               </Button>
 
               <div className={styles.trustNote}>
-                🔒 Secure checkout · SSL encrypted
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Secure checkout · SSL encrypted
               </div>
 
               <div className={styles.trustIcons}>
