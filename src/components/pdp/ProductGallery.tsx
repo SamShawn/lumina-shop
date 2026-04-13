@@ -18,6 +18,17 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
+  function handleThumbnailKeyDown(e: React.KeyboardEvent, index: number) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((prev) => Math.min(prev + 1, images.length - 1));
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((prev) => Math.max(prev - 1, 0));
+    }
+  }
+
   return (
     <div className={styles.gallery}>
       {/* Main image — first in DOM for semantic correctness (visually above on mobile) */}
@@ -44,15 +55,16 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       </div>
 
       {/* Thumbnail strip — second in DOM, visually below on mobile via CSS order */}
-      <div className={styles.thumbs} role="list" aria-label="Product image thumbnails">
+      <div className={styles.thumbs} role="group" aria-label="Product image thumbnails">
         {images.map((img, index) => (
           <button
             key={index}
-            role="listitem"
             className={[styles.thumb, index === activeIndex ? styles.thumbActive : ''].join(' ')}
             onClick={() => setActiveIndex(index)}
+            onKeyDown={(e) => handleThumbnailKeyDown(e, index)}
             aria-label={`View image ${index + 1} of ${images.length}`}
             aria-pressed={index === activeIndex}
+            tabIndex={index === activeIndex ? 0 : -1}
           >
             <Image
               src={img.url}
