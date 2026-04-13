@@ -76,6 +76,42 @@
   justify-content: center;
 }
 
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 32px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-bg);
+  background-color: var(--color-brand);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaLink::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-brand-hover);
+  transform: translateX(-101%);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.ctaLink:hover::before {
+  transform: translateX(0);
+}
+
+.ctaLink > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* Scroll indicator — draws down */
 .scrollIndicator {
   position: absolute;

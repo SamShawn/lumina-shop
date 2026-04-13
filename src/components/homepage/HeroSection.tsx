@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/design-system';
 import styles from './HeroSection.module.css';
 
 export function HeroSection() {
@@ -34,8 +33,8 @@ export function HeroSection() {
         </p>
 
         <div className={styles.actions}>
-          <Link href="/products">
-            <Button size="lg">Explore the Collection</Button>
+          <Link href="/products" className={styles.ctaLink}>
+            Explore the Collection
           </Link>
         </div>
       </div>
