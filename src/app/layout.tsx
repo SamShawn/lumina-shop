@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import "@/components/design-system/tokens.css";
 import { Header } from "@/components/layouts/Header";
 import { Footer } from "@/components/layouts/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
@@ -7,8 +8,8 @@ import { Lightbox } from "@/components/ui/Lightbox";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Lumina - Curated Luxury for the Modern Connoisseur",
-  description: "Discover exceptional pieces crafted with precision and purpose. Lumina offers a curated selection of luxury goods for the discerning individual.",
+  title: "Lumina — Handcrafted Objects Made with Intention",
+  description: "Discover small-batch goods made by hand, built to last. Each piece in our collection represents the pinnacle of craft and intentional design.",
   keywords: ["luxury", "e-commerce", "premium", "design", "artisan"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://lumina.shop'),
   openGraph: {

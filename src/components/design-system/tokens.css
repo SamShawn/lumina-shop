@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap');
+
+:root {
+  /* Color palette — warm neutrals */
+  --color-bg: #faf9f7;
+  --color-surface: #f0ebe3;
+  --color-border: #e8ddd4;
+  --color-muted: #d4c8ba;
+  --color-accent: #c9b99a;
+  --color-accent-hover: #b8a889;
+  --color-text-secondary: #8a7a64;
+  --color-text-body: #6b5e4a;
+  --color-text-dark: #4a3f32;
+  --color-brand: #2c2417;
+  --color-brand-hover: #3d3325;
+  --color-error: #c44;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', Helvetica, sans-serif;
+  --font-narrative: Georgia, serif;
+
+  /* Type scale */
+  --text-hero: clamp(48px, 8vw, 72px);
+  --text-page-title: clamp(32px, 5vw, 40px);
+  --text-product-title: clamp(28px, 4vw, 34px);
+  --text-section: clamp(20px, 3vw, 24px);
+  --text-subhead: 11px;
+  --text-body: 15px;
+  --text-caption: 13px;
+
+  /* Spacing (8px base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 200ms;
+  --duration-base: 350ms;
+  --duration-slow: 500ms;
+
+  /* Layout */
+  --container-max: 1200px;
+  --header-height: 72px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 9999px;
+}
