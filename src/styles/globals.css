@@ -120,9 +120,9 @@ ul, ol {
   outline-offset: 2px;
 }
 
-/* 焦点状态 */
+/* Focus state — use text-secondary for WCAG AA contrast on warm surfaces */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-text-secondary);
   outline-offset: 2px;
 }
 

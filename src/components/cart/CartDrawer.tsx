@@ -36,7 +36,7 @@ export function CartDrawer() {
   }, [isOpen, closeCart]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <>
           {/* Backdrop */}
