@@ -20,29 +20,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   return (
     <div className={styles.gallery}>
-      {/* Thumbnail strip */}
-      <div className={styles.thumbs} role="list" aria-label="Product image thumbnails">
-        {images.map((img, index) => (
-          <button
-            key={index}
-            role="listitem"
-            className={[styles.thumb, index === activeIndex ? styles.thumbActive : ''].join(' ')}
-            onClick={() => setActiveIndex(index)}
-            aria-label={`View image ${index + 1} of ${images.length}`}
-            aria-pressed={index === activeIndex}
-          >
-            <Image
-              src={img.url}
-              alt={img.alt || `${productName} view ${index + 1}`}
-              fill
-              sizes="60px"
-              style={{ objectFit: 'cover' }}
-            />
-          </button>
-        ))}
-      </div>
-
-      {/* Main image */}
+      {/* Main image — first in DOM for semantic correctness (visually above on mobile) */}
       <div className={styles.main}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -63,6 +41,28 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             />
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      {/* Thumbnail strip — second in DOM, visually below on mobile via CSS order */}
+      <div className={styles.thumbs} role="list" aria-label="Product image thumbnails">
+        {images.map((img, index) => (
+          <button
+            key={index}
+            role="listitem"
+            className={[styles.thumb, index === activeIndex ? styles.thumbActive : ''].join(' ')}
+            onClick={() => setActiveIndex(index)}
+            aria-label={`View image ${index + 1} of ${images.length}`}
+            aria-pressed={index === activeIndex}
+          >
+            <Image
+              src={img.url}
+              alt={img.alt || `${productName} view ${index + 1}`}
+              fill
+              sizes="60px"
+              style={{ objectFit: 'cover' }}
+            />
+          </button>
+        ))}
       </div>
     </div>
   );
