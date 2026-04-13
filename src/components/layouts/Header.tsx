@@ -17,6 +17,7 @@ export function Header() {
   const { items } = useCartStore();
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu, theme, setTheme, resolvedTheme } = useUIStore();
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -29,6 +30,15 @@ export function Header() {
       } catch {}
     }
   }, [setTheme]);
+
+  // Scroll state for backdrop blur
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 20);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -55,7 +65,7 @@ export function Header() {
 
   return (
     <>
-      <header className={styles.header}>
+      <header className={[styles.header, scrolled ? styles.headerScrolled : ''].join(' ')}>
         <div className={styles.container}>
           {/* Logo */}
           <Link href="/" className={styles.logo} aria-label="Lumina home">

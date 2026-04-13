@@ -1,20 +1,12 @@
+/* Page transitions handled by framer-motion in template.tsx */
 .page {
-  animation: pageEnter 300ms ease-out forwards;
+  /* intentionally empty */
 }
 
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.entering {
+  animation: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .page {
-    animation: none;
-  }
+.entered {
+  animation: none;
 }

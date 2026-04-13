@@ -2,10 +2,18 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: var(--color-surface);
+  background: var(--color-bg);
   border-bottom: 1px solid var(--color-border-subtle);
+  transition: background-color var(--duration-base) var(--ease-out),
+              backdrop-filter var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out);
+}
+
+.headerScrolled {
+  background-color: color-mix(in srgb, var(--color-bg) 90%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--color-border);
 }
 
 .container {
@@ -80,12 +88,12 @@
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--color-accent);
-  transition: width var(--transition-base);
+  background-color: var(--color-brand);
+  transition: width var(--duration-fast) var(--ease-out);
 }
 
 .navLink:hover {
